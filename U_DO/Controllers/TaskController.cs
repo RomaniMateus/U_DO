@@ -17,5 +17,6 @@ public class TaskController : ControllerBase
         Console.WriteLine($"Added task: {task.Title}");
         Console.WriteLine($"Description: {task.Description}");
         Console.WriteLine($"IsComplete: {task.IsComplete}");
+        Console.WriteLine($"DueDate: {DateHelper.FormatDueDate(task.DueDate)}");
     }
 }
