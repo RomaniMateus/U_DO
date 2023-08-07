@@ -8,16 +8,13 @@ namespace U_DO.Controllers;
 public class TaskController : ControllerBase
 {
     private static List<ToDoTask> tasks = new List<ToDoTask>();
-
+    private static int id = 0;
     [HttpPost]
     public void AddTask([FromBody] ToDoTask task)
     {
         // Add task
+        task.Id = id++;
         tasks.Add(task);
-        Console.WriteLine($"Added task: {task.Title}");
-        Console.WriteLine($"Description: {task.Description}");
-        Console.WriteLine($"IsComplete: {task.IsComplete}");
-        Console.WriteLine($"DueDate: {DateHelper.FormatDueDate(task.DueDate)}");
     }
 
     [HttpGet]
@@ -25,5 +22,12 @@ public class TaskController : ControllerBase
     {
         // Get tasks
         return tasks;
+    }
+
+    [HttpGet("{id}")]
+    public ToDoTask? GetTask(int id)
+    {
+        // Get task by id
+        return tasks.FirstOrDefault(task => task.Id == id);
     }
 }
