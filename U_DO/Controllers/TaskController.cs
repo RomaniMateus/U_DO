@@ -21,7 +21,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet]
-    public List<ToDoTask> GetTasks()
+    public IEnumerable<ToDoTask> GetTasks()
     {
         // Get tasks
         return tasks;
