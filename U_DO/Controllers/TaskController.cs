@@ -19,4 +19,11 @@ public class TaskController : ControllerBase
         Console.WriteLine($"IsComplete: {task.IsComplete}");
         Console.WriteLine($"DueDate: {DateHelper.FormatDueDate(task.DueDate)}");
     }
+
+    [HttpGet]
+    public IEnumerable<ToDoTask> GetTasks()
+    {
+        // Get tasks
+        return tasks;
+    }
 }
