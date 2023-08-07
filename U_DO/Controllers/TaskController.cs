@@ -25,9 +25,13 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ToDoTask? GetTask(int id)
+    public IActionResult GetTask(int id)
     {
         // Get task by id
-        return tasks.FirstOrDefault(task => task.Id == id);
+        var task = tasks.FirstOrDefault(task => task.Id == id);
+
+        if (task == null) return NotFound();
+
+        return Ok(task);
     }
 }
