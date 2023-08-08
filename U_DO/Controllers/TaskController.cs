@@ -12,9 +12,10 @@ public class TaskController : ControllerBase
 {
     private TaskContext _context;
     private IMapper _mapper;
-    public TaskController(TaskContext context)
+    public TaskController(TaskContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
 
@@ -46,5 +47,19 @@ public class TaskController : ControllerBase
         if (task == null) return NotFound();
 
         return Ok(task);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateTask(int id, [FromBody] UpdateTaskDto taskDto)
+    {
+        // Update task
+        var task = _context.Tasks.FirstOrDefault(task => task.Id == id);
+
+        if (task == null) return NotFound();
+
+        _mapper.Map(taskDto, task);
+        _context.SaveChanges();
+
+        return NoContent();
     }
 }
