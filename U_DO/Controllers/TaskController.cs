@@ -12,9 +12,10 @@ public class TaskController : ControllerBase
 {
     private TaskContext _context;
     private IMapper _mapper;
-    public TaskController(TaskContext context)
+    public TaskController(TaskContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
 
