@@ -1,0 +1,13 @@
+* This file is a cheat sheet for useful commands *
+
+## Making a Migration
+
+```bash
+Add-Migration CreatingTaskTable
+```
+
+## Updating the Database
+
+```bash
+Update-Database
+```
