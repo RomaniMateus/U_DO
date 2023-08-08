@@ -10,11 +10,13 @@ public class TaskController : ControllerBase
     private static List<ToDoTask> tasks = new List<ToDoTask>();
     private static int id = 0;
     [HttpPost]
-    public void AddTask([FromBody] ToDoTask task)
+    public IActionResult AddTask([FromBody] ToDoTask task)
     {
         // Add task
         task.Id = id++;
         tasks.Add(task);
+
+        return CreatedAtAction(nameof(GetTask), new { id = task.Id }, task);
     }
 
     [HttpGet]
