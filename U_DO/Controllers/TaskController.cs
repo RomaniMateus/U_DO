@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using U_DO.Data;
+using U_DO.Data.DTO;
 using U_DO.Models;
 
 namespace U_DO.Controllers;
@@ -9,7 +11,7 @@ namespace U_DO.Controllers;
 public class TaskController : ControllerBase
 {
     private TaskContext _context;
-
+    private IMapper _mapper;
     public TaskController(TaskContext context)
     {
         _context = context;
@@ -17,9 +19,11 @@ public class TaskController : ControllerBase
 
 
     [HttpPost]
-    public IActionResult AddTask([FromBody] ToDoTask task)
+    public IActionResult AddTask([FromBody] CreateTaskDto taskDto)
     {
+
         // Add task
+        ToDoTask task = _mapper.Map<ToDoTask>(taskDto);
         _context.Tasks.Add(task);
         _context.SaveChanges();
 
