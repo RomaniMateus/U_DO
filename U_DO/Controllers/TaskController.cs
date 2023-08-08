@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using U_DO.Data;
 using U_DO.Data.DTO;
@@ -58,6 +59,24 @@ public class TaskController : ControllerBase
         if (task == null) return NotFound();
 
         _mapper.Map(taskDto, task);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id}")]
+    public IActionResult UpdateTaskPatch(int id, [FromBody] JsonPatchDocument<UpdateTaskDto> patchDoc)
+    {
+        // Update task
+        var task = _context.Tasks.FirstOrDefault(task => task.Id == id);
+        if (task == null) return NotFound();
+
+        var taskToPatch = _mapper.Map<UpdateTaskDto>(task);
+        patchDoc.ApplyTo(taskToPatch, ModelState);
+
+        if (!TryValidateModel(taskToPatch)) return ValidationProblem(ModelState);
+
+        _mapper.Map(taskToPatch, task);
         _context.SaveChanges();
 
         return NoContent();
