@@ -4,6 +4,8 @@ namespace U_DO.Models;
 
 public class ToDoTask
 {
+    [Key]
+    [Required]
     public int Id { get; set; }
 
     [Required(ErrorMessage = "The title of the task is mandatory!")]
