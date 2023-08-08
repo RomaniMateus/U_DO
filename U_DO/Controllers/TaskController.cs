@@ -48,4 +48,18 @@ public class TaskController : ControllerBase
 
         return Ok(task);
     }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateTask(int id, [FromBody] UpdateTaskDto taskDto)
+    {
+        // Update task
+        var task = _context.Tasks.FirstOrDefault(task => task.Id == id);
+
+        if (task == null) return NotFound();
+
+        _mapper.Map(taskDto, task);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
 }
