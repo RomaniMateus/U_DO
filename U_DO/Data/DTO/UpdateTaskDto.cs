@@ -2,7 +2,7 @@
 
 namespace U_DO.Data.DTO
 {
-    public class CreateTaskDto
+    public class UpdateTaskDto
     {
         [Required(ErrorMessage = "The title of the task is mandatory!")]
         [StringLength(3, ErrorMessage = "The title must be at least 3 characters long!")]
