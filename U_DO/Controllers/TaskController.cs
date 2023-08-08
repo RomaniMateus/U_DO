@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using U_DO.Data;
 using U_DO.Models;
 
 namespace U_DO.Controllers;
@@ -7,14 +8,20 @@ namespace U_DO.Controllers;
 [Route("[controller]")]
 public class TaskController : ControllerBase
 {
-    private static List<ToDoTask> tasks = new List<ToDoTask>();
-    private static int id = 0;
+    private TaskContext _context;
+
+    public TaskController(TaskContext context)
+    {
+        _context = context;
+    }
+
+
     [HttpPost]
     public IActionResult AddTask([FromBody] ToDoTask task)
     {
         // Add task
-        task.Id = id++;
-        tasks.Add(task);
+        _context.Tasks.Add(task);
+        _context.SaveChanges();
 
         return CreatedAtAction(nameof(GetTask), new { id = task.Id }, task);
     }
@@ -23,14 +30,14 @@ public class TaskController : ControllerBase
     public IEnumerable<ToDoTask> GetTasks()
     {
         // Get tasks
-        return tasks;
+        return _context.Tasks;
     }
 
     [HttpGet("{id}")]
     public IActionResult GetTask(int id)
     {
         // Get task by id
-        var task = tasks.FirstOrDefault(task => task.Id == id);
+        var task = _context.Tasks.FirstOrDefault(task => task.Id == id);
 
         if (task == null) return NotFound();
 
