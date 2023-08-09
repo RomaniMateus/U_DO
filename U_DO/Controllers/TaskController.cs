@@ -33,10 +33,10 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ToDoTask> GetTasks()
+    public IEnumerable<ReadTaskDto> GetTasks([FromQuery] int skip = 0, [FromQuery] int take = 10)
     {
         // Get tasks
-        return _context.Tasks;
+        return _mapper.Map<List<ReadTaskDto>>(_context.Tasks.Skip(skip).Take(take));
     }
 
     [HttpGet("{id}")]
@@ -47,7 +47,10 @@ public class TaskController : ControllerBase
 
         if (task == null) return NotFound();
 
-        return Ok(task);
+
+        var taskDto = _mapper.Map<ReadTaskDto>(task);
+
+        return Ok(taskDto);
     }
 
     [HttpPut("{id}")]
@@ -77,6 +80,20 @@ public class TaskController : ControllerBase
         if (!TryValidateModel(taskToPatch)) return ValidationProblem(ModelState);
 
         _mapper.Map(taskToPatch, task);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteTask(int id)
+    {
+        // Delete task
+        var task = _context.Tasks.FirstOrDefault(task => task.Id == id);
+
+        if (task == null) return NotFound();
+
+        _context.Tasks.Remove(task);
         _context.SaveChanges();
 
         return NoContent();
