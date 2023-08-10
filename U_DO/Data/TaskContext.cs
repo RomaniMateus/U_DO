@@ -10,4 +10,5 @@ public class TaskContext : DbContext
     }
 
     public DbSet<ToDoTask> Tasks { get; set; }
+    public DbSet<Course> Courses { get; set; }
 }
